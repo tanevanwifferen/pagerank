@@ -7,7 +7,9 @@ function [matrix, transitions] = creatematrix(nodes, edges)
             matrix(row(2), row(1)) = 1;
         end;
     end;
-    transitions = matrix / diag(sum(matrix));
+    div = sum(matrix);
+    div(div == 0) = 1; % Replace 0 by 1, because division by 0 gives NaN, but we want 0
+  eig  transitions = matrix / diag(div);
     
     %indegrees = sum(matrix);
     %outdegrees = sum(matrix,2);
