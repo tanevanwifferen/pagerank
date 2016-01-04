@@ -1,4 +1,4 @@
-[matrix,transitions]=loadmatrix('data\real');
+[matrix,transitions]=loadmatrix('data');
 transitions_sparse = sparse(transitions);
 transitions_teleport = addteleport(transitions, 0.3);
 transitions_sparse_teleport = sparse(transitions_teleport);
@@ -12,14 +12,14 @@ n = 10000;
 tic
 pagerank_powermethod = powermethod(transitions,n);
 toc
+%tic
+%pagerank_powermethod_sparse = powermethod(transitions_sparse,n);
+%toc
 tic
 pagerank_powermethod_teleport = powermethod(transitions_teleport,n);
 toc
 tic
-pagerank_powermethod_sparse = powermethod(transitions_sparse,n);
-toc
-tic
-pagerank_powermethod_sparse_teleport = powermethod(transitions_sparse_teleport,n);
+pagerank_powermethod_sparse_teleport = powermethod((transitions_sparse * 0.7) + (1 / size(transitions,1) * 0.3),n);
 toc
 
 %%%%%%%%%%%%%%%
