@@ -4,11 +4,11 @@ edges = importdata(strcat(folder, '/edges.txt'));
 
 tic
 [~, transitions] = creatematrix(nodes, edges);
-transitions_before = sparse(transitions);
-pagerank_before = powermethod((transitions_before * 0.7) + (1 / size(nodes,1) * 0.3),10000);
+transitions_before = addteleport(transitions, 0.3);
+pagerank_before = powermethod(transitions_before, 10000);
 toc
 
-for i = 1:19020
+for i = 1:1
     index = randi(size(edges,1));
     deleted = edges(index,:);
     edges(index,:) = [];
@@ -16,23 +16,36 @@ end
 
 tic
 [matrix, transitions] = creatematrix(nodes, edges);
-transitions_after = sparse(transitions);
-pagerank_after = powermethod((transitions_after * 0.7) + (1 / size(nodes,1) * 0.3),10000);
+transitions_after = addteleport(transitions, 0.3);
+pagerank_after = powermethod(transitions_after, 10000);
 toc
 
 sum(pagerank_before == pagerank_after)
 
-tic
-distances = [];
-distances(1:size(transitions,1)) = Inf;
-distances(deleted) = 0;
+distances_from = [];
+distances_from(1:size(transitions,1)) = -1;
+distances_from(deleted(1)) = 0;
 i = 0;
-while any(distances == i)
-    for x = find(distances == i)
-        temp = distances(edges(edges(:,1) == x,2));
-        temp(temp == Inf) = i + 1;
-        distances(edges(edges(:,1) == x,2)) = temp;
+while any(distances_from == i)
+    for x = find(distances_from == i)
+        temp = distances_from(edges(edges(:,1) == x,2));
+        temp(temp == -1) = i + 1;
+        distances_from(edges(edges(:,1) == x,2)) = temp;
     end
     i = i + 1;
 end
-toc
+
+distances_to = [];
+distances_to(1:size(transitions,1)) = -1;
+distances_to(deleted(1)) = 0;
+i = 0;
+while any(distances_to == i)
+    for x = find(distances_to == i)
+        temp = distances_to(edges(edges(:,1) == x,2));
+        temp(temp == -1) = i + 1;
+        distances_to(edges(edges(:,1) == x,2)) = temp;
+    end
+    i = i + 1;
+end
+
+csvwrite('results.csv', [(1:size(distances_from,2))' distances_from' pagerank_before pagerank_after]);
