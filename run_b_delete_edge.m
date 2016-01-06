@@ -10,7 +10,7 @@ toc
 
 pagerank_after = [];
 
-for sample = 1:100
+for sample = 1:1
     edges = importdata(strcat(folder, '/edges.txt'));
 
     index = randi(size(edges,1));

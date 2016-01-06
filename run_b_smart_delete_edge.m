@@ -11,10 +11,11 @@ toc
 
 pagerank_after = [];
 
-for sample = 1:100
-    edges = importdata(strcat(folder, '/edges.txt'));
+for sample = 1:1
+    [~, transitions] = creatematrix(nodes, edges);
+    transitions = createtransitions
     
-    find(cumul_before >= rand()*cumul_before(end));
+    find(cumul_before >= rand());
     
     index = randi(size(edges,1));
     deleted = edges(index,:);
@@ -53,5 +54,5 @@ while any(distances_to == i)
     i = i + 1;
 end
 
-plot(distances_from'-0.05,pagerank_after(:,1) - pagerank_before,'g.',distances_to'+0.05,pagerank_after(:,1)-pagerank_before,'r.',min(distances_from,distances_to)',pagerank_after(:,1)-pagerank_before,'.'); grid on
+plot(distances_from'-0.05,pagerank_after(:,end) - pagerank_before,'g.',distances_to'+0.05,pagerank_after(:,1)-pagerank_before,'r.'); grid on
 csvwrite('results.csv', [(1:size(distances_from,2))' distances_from' pagerank_before pagerank_after]);
