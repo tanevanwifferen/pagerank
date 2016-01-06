@@ -1,4 +1,4 @@
-[matrix,transitions]=loadmatrix('data');
+[matrix,transitions]=loadmatrix('data/real');
 transitions_sparse = sparse(transitions);
 transitions_teleport = addteleport(transitions, 0.3);
 transitions_sparse_teleport = sparse(transitions_teleport);

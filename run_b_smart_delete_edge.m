@@ -11,10 +11,7 @@ toc
 
 pagerank_after = [];
 
-for sample = 1:1
-    [~, transitions] = creatematrix(nodes, edges);
-    transitions = createtransitions
-    
+for sample = 1:1    
     find(cumul_before >= rand());
     
     index = randi(size(edges,1));
